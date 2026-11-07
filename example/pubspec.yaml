@@ -1,0 +1,22 @@
+name: voip_call_engine_example
+description: Official pub.dev example application for voip_call_engine demonstrating CallKit, ConnectionService, Multi-Call Hold/Swap, Audio Routing, and Go Harness E2E integration.
+publish_to: none
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  voip_call_engine:
+    path: ../
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

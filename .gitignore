@@ -1,0 +1,26 @@
+# Dart & Flutter build/tool artifacts
+.dart_tool/
+.packages
+build/
+pubspec.lock
+*.iml
+*.ipr
+*.iws
+.idea/
+.vscode/
+
+# Platform ephemeral directories
+**/ios/Pods/
+**/ios/.symlinks/
+**/macos/Pods/
+**/macos/.symlinks/
+**/android/.gradle/
+**/android/local.properties
+**/windows/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+**/linux/flutter/ephemeral/
+
+# Go binaries & test cache
+*.exe
+*.out
+coverage.txt
