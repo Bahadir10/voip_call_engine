@@ -8,8 +8,8 @@ import 'package:voip_call_engine/voip_call_engine.dart';
 
 String _resolveGoHarnessDir() {
   final candidates = <String>[
-    'tools/go_voip_harness',
-    '../../../tools/go_voip_harness',
+    'tool/go_voip_harness',
+    '../tool/go_voip_harness',
   ];
   for (final rel in candidates) {
     final dir = Directory(rel);
@@ -17,7 +17,7 @@ String _resolveGoHarnessDir() {
       return dir.absolute.path;
     }
   }
-  throw StateError('Could not locate tools/go_voip_harness directory.');
+  throw StateError('Could not locate tool/go_voip_harness directory.');
 }
 
 void main() {
