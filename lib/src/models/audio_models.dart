@@ -26,6 +26,7 @@ enum AudioRoute {
 /// Represents a specific physical or virtual audio endpoint discovered on the host OS.
 @immutable
 class AudioDevice {
+  /// Creates an [AudioDevice] representing an audio input or output endpoint.
   const AudioDevice({
     required this.id,
     required this.name,
@@ -34,6 +35,7 @@ class AudioDevice {
     this.isInput = false,
   });
 
+  /// Deserializes an [AudioDevice] from a platform channel map.
   factory AudioDevice.fromMap(Map<Object?, Object?> map) {
     final routeName =
         CoercionUtils.asString(map['route'], fallback: 'systemDefault');
@@ -52,12 +54,22 @@ class AudioDevice {
     );
   }
 
+  /// Unique platform identifier for the physical or virtual device.
   final String id;
+
+  /// User-friendly device name (e.g., `"AirPods Pro"`, `"Built-in Speaker"`).
   final String name;
+
+  /// Standard category classification of the endpoint.
   final AudioRoute route;
+
+  /// Whether this is the operating system's default communication device.
   final bool isDefault;
+
+  /// Whether this endpoint functions as an audio input (microphone).
   final bool isInput;
 
+  /// Serializes the audio device to a transport map.
   Map<String, Object?> toMap() => <String, Object?>{
         'id': id,
         'name': name,
@@ -85,6 +97,7 @@ class AudioDevice {
 /// Snapshot of the current audio routing state.
 @immutable
 class AudioRouteState {
+  /// Creates an [AudioRouteState] snapshot.
   const AudioRouteState({
     required this.activeRoute,
     required this.availableRoutes,
@@ -94,6 +107,7 @@ class AudioRouteState {
     this.isMicrophoneMuted = false,
   });
 
+  /// Deserializes an [AudioRouteState] from a platform channel map.
   factory AudioRouteState.fromMap(Map<Object?, Object?> map) {
     final activeRouteName =
         CoercionUtils.asString(map['activeRoute'], fallback: 'earpiece');
@@ -131,13 +145,25 @@ class AudioRouteState {
     );
   }
 
+  /// The currently active general audio route.
   final AudioRoute activeRoute;
+
+  /// All selectable general audio route categories on the current platform.
   final List<AudioRoute> availableRoutes;
+
+  /// The specific hardware audio device currently routing audio, if known.
   final AudioDevice? activeDevice;
+
+  /// All physical and virtual audio devices detected by the host system.
   final List<AudioDevice> availableDevices;
+
+  /// Whether the native telecom voice session (`AVAudioSession` / `AudioManager`) is active.
   final bool isAudioSessionActive;
+
+  /// Whether the system microphone is currently muted.
   final bool isMicrophoneMuted;
 
+  /// Serializes the audio route state into a transport map.
   Map<String, Object?> toMap() => <String, Object?>{
         'activeRoute': activeRoute.name,
         'availableRoutes': availableRoutes.map((e) => e.name).toList(),

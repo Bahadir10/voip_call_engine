@@ -13,12 +13,16 @@ import '../voip_call_engine_client.dart';
 /// Automatically executes incoming backend signaling commands on [VoipCallEngine]
 /// and streams `fe_ack` state-transition telemetry back to the Go backend.
 class VoipHarnessBridge {
+  /// Creates a [VoipHarnessBridge] instance bound to [engine] and [httpBaseUrl].
   VoipHarnessBridge({
     required this.engine,
     required this.httpBaseUrl,
   });
 
+  /// Client engine instance being orchestrated.
   final VoipCallEngine engine;
+
+  /// Root HTTP URL of the running Go harness server (e.g. `http://127.0.0.1:8090`).
   final String httpBaseUrl;
 
   final HttpClient _httpClient = HttpClient();
@@ -26,12 +30,14 @@ class VoipHarnessBridge {
   StreamSubscription<dynamic>? _wsSub;
   StreamSubscription<CallEvent>? _engineSub;
 
+  /// Target WebSocket URL computed from [httpBaseUrl].
   String get wsUrl {
     final uri = Uri.parse(httpBaseUrl);
     final scheme = uri.scheme == 'https' ? 'wss' : 'ws';
     return '$scheme://${uri.host}:${uri.port}/ws';
   }
 
+  /// Whether the WebSocket connection to the Go harness is open.
   bool get isConnected => _ws != null && _ws!.readyState == WebSocket.open;
 
   /// Connects to the Go Harness WebSocket and begins bidirectional telemetry sync.
@@ -176,6 +182,7 @@ class VoipHarnessBridge {
     _ws = null;
   }
 
+  /// Closes active WebSocket connections and forces HTTP client teardown.
   Future<void> dispose() async {
     await disconnect();
     _httpClient.close(force: true);

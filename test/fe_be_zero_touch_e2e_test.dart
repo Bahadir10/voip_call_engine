@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:voip_call_engine/testing.dart';
 import 'package:voip_call_engine/voip_call_engine.dart';
 
 String _resolveGoHarnessDir() {
@@ -143,7 +144,11 @@ void main() {
       // Scenario E: Query Go BE's /api/e2e/report to prove Go BE received & verified FE's state transition ACKs!
       await _waitForCondition(() async {
         final rep = await bridge.fetchBackendE2eReport();
-        return (rep['ackCount'] as int? ?? 0) >= 6;
+        final acks = (rep['acks'] as List<dynamic>?) ?? <dynamic>[];
+        final states = acks
+            .map((a) => (a as Map<String, dynamic>)['currentState'] as String?)
+            .toSet();
+        return states.contains('ended') && (rep['audioVerified'] == true);
       });
 
       final backendReport = await bridge.fetchBackendE2eReport();

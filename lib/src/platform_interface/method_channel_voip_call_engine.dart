@@ -12,6 +12,7 @@ import 'voip_call_engine_platform.dart';
 /// Default binary-messenger implementation of [VoipCallEnginePlatform] communicating
 /// with the native iOS, Android, Windows, and macOS plugins.
 class MethodChannelVoipCallEngine extends VoipCallEnginePlatform {
+  /// Creates a [MethodChannelVoipCallEngine] instance with an optional custom [methodChannel].
   MethodChannelVoipCallEngine({
     MethodChannel? methodChannel,
   }) : _channel = methodChannel ??
@@ -23,6 +24,7 @@ class MethodChannelVoipCallEngine extends VoipCallEnginePlatform {
   final StreamController<CallEvent> _eventController =
       StreamController<CallEvent>.broadcast();
 
+  /// Underlying [MethodChannel] used for native communication.
   @visibleForTesting
   MethodChannel get channel => _channel;
 

@@ -16,6 +16,7 @@ class _TombstoneEntry {
 
 /// Exception thrown when an illegal call state transition is requested in strict mode.
 class InvalidCallStateTransitionException implements Exception {
+  /// Creates an [InvalidCallStateTransitionException] describing the illegal state transition.
   const InvalidCallStateTransitionException({
     required this.callId,
     required this.fromState,
@@ -23,9 +24,16 @@ class InvalidCallStateTransitionException implements Exception {
     required this.reason,
   });
 
+  /// Call identifier for which the illegal transition was attempted.
   final String callId;
+
+  /// Current state of the call.
   final CallState fromState;
+
+  /// The illegal state that was attempted.
   final CallState attemptedTargetState;
+
+  /// Explanation why the transition is forbidden.
   final String reason;
 
   @override

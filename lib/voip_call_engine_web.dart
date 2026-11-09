@@ -10,6 +10,7 @@ import 'src/platform_interface/voip_call_engine_platform.dart';
 
 /// Web implementation of [VoipCallEnginePlatform].
 class VoipCallEngineWeb extends VoipCallEnginePlatform {
+  /// Creates a Web platform instance for [VoipCallEnginePlatform].
   VoipCallEngineWeb();
 
   /// Registers [VoipCallEngineWeb] as the default platform instance on Web.

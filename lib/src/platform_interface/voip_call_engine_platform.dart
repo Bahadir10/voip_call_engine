@@ -8,6 +8,7 @@ import 'method_channel_voip_call_engine.dart';
 
 /// The interface that implementations of `voip_call_engine` must implement.
 abstract class VoipCallEnginePlatform extends PlatformInterface {
+  /// Constructs a [VoipCallEnginePlatform] verifying identity token.
   VoipCallEnginePlatform() : super(token: _token);
 
   static final Object _token = Object();

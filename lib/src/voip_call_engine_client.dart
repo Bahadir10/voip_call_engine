@@ -98,6 +98,7 @@ class VoipCallEngine {
 
   final VoipCallEnginePlatform? _platformOverride;
   late CallStateMachine _stateMachine;
+  /// Dedicated audio controller for inspecting and switching audio routes and WebRTC sync hooks.
   late final VoipAudioController audio = VoipAudioController._(this);
 
   final StreamController<CallEvent> _mergedEventsController =

@@ -34,14 +34,22 @@ enum CallState {
 
 /// Direction of a VoIP call.
 enum CallDirection {
+  /// Call initiated by a remote caller and delivered to this device.
   incoming,
+
+  /// Call originated from this device to a remote callee.
   outgoing,
 }
 
 /// Type of caller handle (phone number, email, or generic SIP/user identifier).
 enum CallHandleType {
+  /// Generic alphanumeric username, user ID, or SIP URI.
   generic,
+
+  /// Standard E.164 or local telephone number.
   phoneNumber,
+
+  /// Standard email address identifier.
   emailAddress,
 }
 
@@ -97,11 +105,13 @@ enum CallActionSource {
 /// Immutable representation of a caller/callee address handle.
 @immutable
 class CallHandle {
+  /// Creates a [CallHandle] with the specified [type] and [value].
   const CallHandle({
     required this.type,
     required this.value,
   });
 
+  /// Deserializes a [CallHandle] from a map received over platform channels.
   factory CallHandle.fromMap(Map<Object?, Object?> map) {
     final typeName = CoercionUtils.asString(map['type'], fallback: 'generic');
     return CallHandle(
@@ -113,9 +123,13 @@ class CallHandle {
     );
   }
 
+  /// The handle format type ([CallHandleType.phoneNumber], [CallHandleType.generic], etc.).
   final CallHandleType type;
+
+  /// The address string (e.g. `+15551234567` or `alice@domain.com`).
   final String value;
 
+  /// Serializes the handle into a transport map.
   Map<String, Object?> toMap() => <String, Object?>{
         'type': type.name,
         'value': value,
@@ -136,6 +150,7 @@ class CallHandle {
 /// Capabilities supported by a specific call session.
 @immutable
 class CallCapabilities {
+  /// Creates a [CallCapabilities] descriptor defining available call actions.
   const CallCapabilities({
     this.supportsHold = true,
     this.supportsMute = true,
@@ -144,6 +159,7 @@ class CallCapabilities {
     this.supportsVideo = false,
   });
 
+  /// Deserializes [CallCapabilities] from a platform channel map.
   factory CallCapabilities.fromMap(Map<Object?, Object?> map) {
     return CallCapabilities(
       supportsHold: CoercionUtils.asBool(map['supportsHold'], fallback: true),
@@ -156,12 +172,22 @@ class CallCapabilities {
     );
   }
 
+  /// Whether putting this call on hold is supported.
   final bool supportsHold;
+
+  /// Whether muting the microphone during this call is supported.
   final bool supportsMute;
+
+  /// Whether playing and sending in-call DTMF tones is supported.
   final bool supportsDtmf;
+
+  /// Whether grouping / conferencing calls together is supported.
   final bool supportsGrouping;
+
+  /// Whether video transmission is supported for this call.
   final bool supportsVideo;
 
+  /// Serializes the capabilities into a transport map.
   Map<String, Object?> toMap() => <String, Object?>{
         'supportsHold': supportsHold,
         'supportsMute': supportsMute,
@@ -174,6 +200,7 @@ class CallCapabilities {
 /// Request payload used to report an incoming call or start an outgoing call.
 @immutable
 class CallRequest {
+  /// Creates a [CallRequest] payload.
   const CallRequest({
     required this.callId,
     required this.callerName,
@@ -185,6 +212,7 @@ class CallRequest {
     this.timeoutDuration = const Duration(seconds: 45),
   });
 
+  /// Deserializes a [CallRequest] from a platform channel map.
   factory CallRequest.fromMap(Map<Object?, Object?> map) {
     return CallRequest(
       callId: CoercionUtils.asString(
@@ -215,14 +243,29 @@ class CallRequest {
 
   /// Must be a valid UUID v4 string (required by iOS CallKit `UUID`).
   final String callId;
+
+  /// Display name of the caller/callee shown on lock screen and call UI.
   final String callerName;
+
+  /// Identifier handle (phone number, SIP URI, or username) for this call.
   final CallHandle handle;
+
+  /// Optional remote HTTP or local file URI for the caller's avatar icon.
   final String? avatarUrl;
+
+  /// Whether this call contains video tracks.
   final bool hasVideo;
+
+  /// Feature capabilities enabled for this call.
   final CallCapabilities capabilities;
+
+  /// Custom key-value metadata associated with this call session.
   final Map<String, String> metadata;
+
+  /// Maximum duration a call can ring before being automatically timed out.
   final Duration timeoutDuration;
 
+  /// Serializes the request into a transport map.
   Map<String, Object?> toMap() => <String, Object?>{
         'callId': callId,
         'callerName': callerName,
@@ -238,6 +281,7 @@ class CallRequest {
 /// Complete immutable snapshot of a VoIP call session managed by the state machine.
 @immutable
 class CallSession {
+  /// Creates a [CallSession] snapshot representing a call's instantaneous state.
   const CallSession({
     required this.callId,
     required this.direction,
@@ -258,6 +302,7 @@ class CallSession {
     this.metadata = const <String, String>{},
   });
 
+  /// Deserializes a [CallSession] from a platform channel map.
   factory CallSession.fromMap(Map<Object?, Object?> map) {
     final directionStr =
         CoercionUtils.asString(map['direction'], fallback: 'incoming');
@@ -317,15 +362,34 @@ class CallSession {
     );
   }
 
+  /// Unique UUID v4 string identifying this call across all layers.
   final String callId;
+
+  /// Whether this call is incoming or outgoing.
   final CallDirection direction;
+
+  /// Current lifecycle state ([CallState.active], [CallState.onHold], etc.).
   final CallState state;
+
+  /// Display name of the remote participant.
   final String callerName;
+
+  /// Contact handle (phone number, email, or user identifier).
   final CallHandle handle;
+
+  /// UTC timestamp when this call session was initially registered.
   final DateTime createdAt;
+
+  /// Optional caller avatar icon URI.
   final String? avatarUrl;
+
+  /// Whether video transmission is enabled.
   final bool hasVideo;
+
+  /// Whether the local microphone is currently muted.
   final bool isMuted;
+
+  /// Whether this call is currently held.
   final bool isOnHold;
 
   /// True if the call was placed on hold automatically due to a native GSM call interruption.
@@ -333,12 +397,23 @@ class CallSession {
 
   /// True when the native audio subsystem (`AVAudioSession` / `AudioManager`) has activated voice routing.
   final bool audioSessionActive;
+
+  /// UTC timestamp when two-way media and audio were established.
   final DateTime? connectedAt;
+
+  /// UTC timestamp when the call was terminated.
   final DateTime? endedAt;
+
+  /// The reason why the call terminated.
   final CallEndReason? endReason;
+
+  /// Feature capabilities configured for this call.
   final CallCapabilities capabilities;
+
+  /// Custom application metadata attached to this call session.
   final Map<String, String> metadata;
 
+  /// Creates a copy of this [CallSession] with updated fields.
   CallSession copyWith({
     CallState? state,
     String? callerName,
@@ -376,6 +451,7 @@ class CallSession {
     );
   }
 
+  /// Serializes the call session snapshot into a transport map.
   Map<String, Object?> toMap() => <String, Object?>{
         'callId': callId,
         'direction': direction.name,

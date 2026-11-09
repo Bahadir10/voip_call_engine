@@ -1,3 +1,13 @@
+## 0.1.2
+
+* **100% Comprehensive API Dartdoc Coverage**:
+  * Added detailed dartdoc comments to every single public class, constructor, parameter, property, method, and enum value across all library modules.
+  * Added library-level documentation for `package:voip_call_engine` with architectural guidelines.
+* **WASM & Web Architecture Isolation**:
+  * Moved the Go harness bridge to a dedicated test module (`package:voip_call_engine/testing.dart`), decoupling `dart:io` from the root entrypoint and enabling full WebAssembly (WASM) compatibility.
+* **Deterministic E2E Test Hardening**:
+  * Hardened asynchronous WebSocket state-transition assertions in `fe_be_zero_touch_e2e_test.dart`.
+
 ## 0.1.1
 
 * **Comprehensive Documentation & Setup Guides**:

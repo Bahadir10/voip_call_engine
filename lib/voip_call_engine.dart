@@ -1,4 +1,20 @@
-export 'src/harness/voip_harness_bridge.dart';
+/// Production-grade, deterministic VoIP call lifecycle, CallKit, ConnectionService,
+/// and multi-platform audio routing engine for Flutter.
+///
+/// Designed to eliminate PushKit terminations (`0xbaadca11`), ghost calls, cold-start
+/// lost events, and silent WebRTC audio race conditions.
+///
+/// Supported platforms:
+/// - iOS (CallKit + PushKit + AVAudioSession)
+/// - Android (Self-Managed ConnectionService / Jetpack Core-Telecom + AudioManager)
+/// - Windows (WASAPI Communication Device + Toast Notifications)
+/// - macOS (CoreAudio + UserNotifications)
+/// - Web (Web Audio Sink + MediaSession + Web Notifications)
+///
+/// For end-to-end integration testing and Go harness bridge utilities,
+/// import `package:voip_call_engine/testing.dart`.
+library;
+
 export 'src/models/audio_models.dart';
 export 'src/models/call_events.dart';
 export 'src/models/call_models.dart';
