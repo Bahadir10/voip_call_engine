@@ -1,6 +1,6 @@
 name: voip_call_engine
 description: Deterministic VoIP Call Lifecycle, CallKit, ConnectionService, and Audio Routing engine for Flutter (iOS, Android, Windows, macOS, Web).
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/Bahadir10/voip_call_engine
 issue_tracker: https://github.com/Bahadir10/voip_call_engine/issues
 topics:

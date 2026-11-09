@@ -20,6 +20,10 @@ pubspec.lock
 **/macos/Flutter/ephemeral/
 **/linux/flutter/ephemeral/
 
+# Generated documentation
+doc/
+
+
 # Go binaries & test cache
 *.exe
 *.out

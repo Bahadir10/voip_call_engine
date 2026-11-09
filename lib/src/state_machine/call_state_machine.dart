@@ -153,7 +153,7 @@ class CallStateMachine {
 
   /// Registers a newly received incoming call in [CallState.incomingRinging].
   ///
-  /// If an out-of-order `Cancel` / `endCall` arrived earlier for [request.callId]
+  /// If an out-of-order `Cancel` / `endCall` arrived earlier for `request.callId`
   /// (present in the Tombstone registry), the call is immediately terminated with
   /// [CallEndReason.remoteCancelled] without ringing.
   CallSession registerIncomingCall(
